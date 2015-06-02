@@ -16,6 +16,32 @@ public class MyAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	
+	String keyword;
+	int total;
+	
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+	
+	public String getKeyword() {
+		return keyword;
+	}
+	
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	
+	public int getTotal() {
+		return total;
+	}
+	
+	public int getStart() {
+		if (total > items.size()) {
+			return items.size() + 1;
+		}
+		return -1;
+	}
+	
 	@Override
 	public int getCount() {
 		return items.size();
