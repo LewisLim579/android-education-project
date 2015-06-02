@@ -16,7 +16,8 @@ import com.example.networktestnaver.NetworkManager.OnResultListener;
 public class MainActivity extends ActionBarActivity {
 
 	ListView listView;
-	ArrayAdapter<MovieItem> mAdapter;
+//	ArrayAdapter<MovieItem> mAdapter;
+	MyAdapter mAdapter;
 	EditText inputView;
 	
 	@Override
@@ -24,7 +25,8 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		listView = (ListView)findViewById(R.id.listView1);
-		mAdapter = new ArrayAdapter<MovieItem>(this, android.R.layout.simple_list_item_1);
+//		mAdapter = new ArrayAdapter<MovieItem>(this, android.R.layout.simple_list_item_1);
+		mAdapter = new MyAdapter();
 		listView.setAdapter(mAdapter);
 		inputView = (EditText)findViewById(R.id.edit_input);
 		Button btn = (Button)findViewById(R.id.btn_search);
@@ -34,13 +36,14 @@ public class MainActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				String keyword = inputView.getText().toString();
 				if (keyword != null && !keyword.equals("")) {
-					NetworkManager.getInstance().getNaverMovie(MainActivity.this, keyword, 1, 10, new OnResultListener<NaverMovies>() {
+					NetworkManager.getInstance().getNaverMovie(MainActivity.this, keyword, 1, 50, new OnResultListener<NaverMovies>() {
 						
 						@Override
 						public void onSuccess(NaverMovies result) {
-							for (MovieItem m : result.items) {
-								mAdapter.add(m);
-							}
+//							for (MovieItem m : result.items) {
+//								mAdapter.add(m);
+//							}
+							mAdapter.addAll(result.items);
 						}
 						
 						@Override
