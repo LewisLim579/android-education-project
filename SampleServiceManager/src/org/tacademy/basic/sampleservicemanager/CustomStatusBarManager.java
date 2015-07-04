@@ -41,6 +41,28 @@ public class CustomStatusBarManager {
 		}
 	}
 
+	public void expandNotificationsPanel() {
+		try {
+			Method expand = mStatusBarManager.getClass().getMethod("expandNotificationsPanel",
+					null);
+			expand.invoke(mStatusBarManager, null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void expandSettingsPanel() {
+		try {
+			Method expand = mStatusBarManager.getClass().getMethod("expandSettingsPanel",
+					null);
+			expand.invoke(mStatusBarManager, null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void collapse() {
 		try {
 			Method collapse = mStatusBarManager.getClass().getMethod("", null);
