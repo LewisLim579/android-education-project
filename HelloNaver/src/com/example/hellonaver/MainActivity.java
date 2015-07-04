@@ -23,13 +23,15 @@ import com.example.hellonaver.NetworkManager.OnResultListener;
 public class MainActivity extends ParentActivity {
 
 	ListView listView;
-	ArrayAdapter<MovieItem> mAdapter;
+//	ArrayAdapter<MovieItem> mAdapter;
+	MyAdapter mAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		listView = (ListView)findViewById(R.id.listView1);
-		mAdapter = new ArrayAdapter<MovieItem>(this, android.R.layout.simple_list_item_1);
+//		mAdapter = new ArrayAdapter<MovieItem>(this, android.R.layout.simple_list_item_1);
+		mAdapter = new MyAdapter();
 		listView.setAdapter(mAdapter);
 		Button btn = (Button)findViewById(R.id.button1);
 		btn.setOnClickListener(new View.OnClickListener() {
@@ -56,10 +58,11 @@ public class MainActivity extends ParentActivity {
 
 					@Override
 					public void onSuccess(NaverMovies result) {
-						for (MovieItem item : result.items) {
-							mAdapter.add(item);
-						}
-						
+//						for (MovieItem item : result.items) {
+//							mAdapter.add(item);
+//						}
+
+						mAdapter.addAll(result.items);
 					}
 					
 					@Override
