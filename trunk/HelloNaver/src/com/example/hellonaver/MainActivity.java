@@ -6,8 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import com.begentgroup.xmlparser.XMLParser;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -19,7 +17,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity {
+import com.begentgroup.xmlparser.XMLParser;
+import com.example.hellonaver.NetworkManager.OnResultListener;
+
+public class MainActivity extends ParentActivity {
 
 	ListView listView;
 	ArrayAdapter<MovieItem> mAdapter;
@@ -35,47 +36,78 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View v) {
-				new NaverTask().execute();
+//				new NaverTask().execute();
+//				NetworkManager.getInstance().getNaverMovie(new OnResultListener<NaverMovies>() {
+//					
+//					@Override
+//					public void onSuccess(NaverMovies result) {
+//						for (MovieItem item : result.items) {
+//							mAdapter.add(item);
+//						}
+//						
+//					}
+//					
+//					@Override
+//					public void onFail(int code) {
+//						Toast.makeText(MainActivity.this, "fail", Toast.LENGTH_SHORT).show();
+//					}
+//				});
+				NetworkManager.getInstance().getNaverMovie(MainActivity.this, "사랑", new OnResultListener<NaverMovies>() {
+
+					@Override
+					public void onSuccess(NaverMovies result) {
+						for (MovieItem item : result.items) {
+							mAdapter.add(item);
+						}
+						
+					}
+					
+					@Override
+					public void onFail(int code) {
+						Toast.makeText(MainActivity.this, "fail", Toast.LENGTH_SHORT).show();
+					}
+				});
 			}
 		});
 	}
 
-	class NaverTask extends AsyncTask<Void, Integer, NaverMovies> {
-		@Override
-		protected NaverMovies doInBackground(Void... params) {
-			try {
-				URL url = new URL("http://openapi.naver.com/search?key=55f1e342c5bce1cac340ebb6032c7d9a&display=10&start=1&target=movie&query=" + URLEncoder.encode("사랑", "utf8"));
-				HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-				int responseCode = conn.getResponseCode();
-				if (responseCode == HttpURLConnection.HTTP_OK) {
-					XMLParser parser = new XMLParser();
-					NaverMovies result = parser.fromXml(conn.getInputStream(), "channel", NaverMovies.class);
-					return result;
-				}
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(NaverMovies result) {
-			super.onPostExecute(result);
-			if (result != null) {
-				for (MovieItem item : result.items) {
-					mAdapter.add(item);
-				}
-			} else {
-				Toast.makeText(MainActivity.this, "fail", Toast.LENGTH_SHORT).show();
-			}
-		}
-	}
+	
+//	class NaverTask extends AsyncTask<Void, Integer, NaverMovies> {
+//		@Override
+//		protected NaverMovies doInBackground(Void... params) {
+//			try {
+//				URL url = new URL("http://openapi.naver.com/search?key=55f1e342c5bce1cac340ebb6032c7d9a&display=10&start=1&target=movie&query=" + URLEncoder.encode("사랑", "utf8"));
+//				HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+//				int responseCode = conn.getResponseCode();
+//				if (responseCode == HttpURLConnection.HTTP_OK) {
+//					XMLParser parser = new XMLParser();
+//					NaverMovies result = parser.fromXml(conn.getInputStream(), "channel", NaverMovies.class);
+//					return result;
+//				}
+//			} catch (MalformedURLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//			
+//			return null;
+//		}
+//		
+//		@Override
+//		protected void onPostExecute(NaverMovies result) {
+//			super.onPostExecute(result);
+//			if (result != null) {
+//				for (MovieItem item : result.items) {
+//					mAdapter.add(item);
+//				}
+//			} else {
+//				Toast.makeText(MainActivity.this, "fail", Toast.LENGTH_SHORT).show();
+//			}
+//		}
+//	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
