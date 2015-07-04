@@ -77,7 +77,7 @@ public class NetworkManager {
 		client.cancelRequests(context, true);
 	}
 	
-	private static final String SERVER = "htpp://openapi.naver.com";
+	private static final String SERVER = "http://openapi.naver.com";
 	private static final String SEARCH_URL = SERVER + "/search";
 	public void getNaverMovie(Context context, String keyword, final OnResultListener<NaverMovies> listener) {
 		RequestParams params = new RequestParams();
