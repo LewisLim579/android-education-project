@@ -32,4 +32,39 @@
         <requestFocus />
     </EditText>
 
+    <Button
+        android:id="@+id/btn_toast"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="toast" />
+
+    <Button
+        android:id="@+id/btn_google"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="google" />
+
+    <Button
+        android:id="@+id/btn_dial"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dial" />
+
+    <Button
+        android:id="@+id/btn_photo"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="photo" />
+
+    <Button
+        android:id="@+id/btn_other"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="other" />
+
 </LinearLayout>

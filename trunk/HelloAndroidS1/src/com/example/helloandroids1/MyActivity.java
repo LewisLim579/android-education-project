@@ -1,5 +1,7 @@
 package com.example.helloandroids1;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MyActivity extends ActionBarActivity {
@@ -31,6 +34,57 @@ public class MyActivity extends ActionBarActivity {
 		});
         
         
+        btn = (Button)findViewById(R.id.btn_toast);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(MyActivity.this, "toast dialog...", Toast.LENGTH_SHORT).show();
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_google);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+				startActivity(i);
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_dial);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:010-2257-3585"));
+				startActivity(i);
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_photo);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				Intent i = new Intent(Intent.ACTION_VIEW);
+				i.setType("image/jpeg");
+				startActivity(i);
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_other);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MyActivity.this, OtherActivity.class);
+				startActivity(i);
+			}
+		});
     }
 
     @Override
