@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">헬로안드로이드S1</string>
+    <string name="hello_world">안녕 안드로이드!</string>
+    <string name="action_settings">설정</string>
+    <string name="test_string">테스트</string>
+    
+</resources>
