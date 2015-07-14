@@ -24,44 +24,44 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        messageView = (TextView)findViewById(R.id.text_message);
-        itemView = (CheckBox)findViewById(R.id.check_item);
-        group = (RadioGroup)findViewById(R.id.radioGroup1);
-        
-        itemView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (!isForceChanged) {
-			    	if (isChecked) {
-			        	Toast.makeText(MainActivity.this, "Item checked changed", Toast.LENGTH_SHORT).show();        
-			    	} else {
-			        	Toast.makeText(MainActivity.this, "Item unchecked changed", Toast.LENGTH_SHORT).show();
-			    	}
-				}
-			}
-		});
-        
-        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				
-			}
-		});
-        
-        Button btn = (Button)findViewById(R.id.btn_set_text);
-        btn.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Resources res = getResources();
-				String message = res.getString(R.string.hi_world);
-				messageView.setText(Html.fromHtml(message));
-				
-			}
-		});
+        setContentView(R.layout.edit_layout);
+//        messageView = (TextView)findViewById(R.id.text_message);
+//        itemView = (CheckBox)findViewById(R.id.check_item);
+//        group = (RadioGroup)findViewById(R.id.radioGroup1);
+//        
+//        itemView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//			
+//			@Override
+//			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//				if (!isForceChanged) {
+//			    	if (isChecked) {
+//			        	Toast.makeText(MainActivity.this, "Item checked changed", Toast.LENGTH_SHORT).show();        
+//			    	} else {
+//			        	Toast.makeText(MainActivity.this, "Item unchecked changed", Toast.LENGTH_SHORT).show();
+//			    	}
+//				}
+//			}
+//		});
+//        
+//        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//			
+//			@Override
+//			public void onCheckedChanged(RadioGroup group, int checkedId) {
+//				
+//			}
+//		});
+//        
+//        Button btn = (Button)findViewById(R.id.btn_set_text);
+//        btn.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				Resources res = getResources();
+//				String message = res.getString(R.string.hi_world);
+//				messageView.setText(Html.fromHtml(message));
+//				
+//			}
+//		});
     }
     
     boolean isForceChanged = false;
