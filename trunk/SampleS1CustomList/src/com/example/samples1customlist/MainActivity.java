@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.samples1customlist.MyAdapter.OnAdapterItemListener;
@@ -30,6 +31,9 @@ public class MainActivity extends ActionBarActivity {
 	};
 	ImageView fullView;
 	
+	ImageView headerImageView;
+	TextView headerTitleView;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,13 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
         listView = (ListView)findViewById(R.id.listView1);
+        
+        View view = getLayoutInflater().inflate(R.layout.view_header, null);
+        headerImageView = (ImageView)view.findViewById(R.id.image_header_image);
+        headerTitleView = (TextView)view.findViewById(R.id.text_header_title);
+        headerTitleView.setText("header title .....");
+        listView.addHeaderView(view,null, false);
+        
         mAdapter = new MyAdapter();
         mAdapter.setOnAdapterItemListener(new OnAdapterItemListener() {
 			
