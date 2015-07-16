@@ -1,5 +1,6 @@
 package com.example.samples1fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TabOneFragment extends Fragment {
 
@@ -38,6 +40,22 @@ public class TabOneFragment extends Fragment {
 				messageView.setText(inputView.getText().toString());
 			}
 		});
+		
+		btn = (Button)view.findViewById(R.id.btn_other);
+		btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), OtherActivity.class);
+				startActivityForResult(intent,0);
+			}
+		});
 		return view;
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Toast.makeText(getActivity(), "Fragment onActivityResult", Toast.LENGTH_SHORT).show();
 	}
 }
