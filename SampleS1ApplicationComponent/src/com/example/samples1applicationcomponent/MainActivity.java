@@ -1,7 +1,10 @@
 package com.example.samples1applicationcomponent;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -17,6 +21,7 @@ public class MainActivity extends ActionBarActivity {
 	EditText inputView;
 	TextView resultView;
 	private static final int REQUEST_CODE_OTHER = 0;
+	int count = 100;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,30 @@ public class MainActivity extends ActionBarActivity {
 				startActivityForResult(intent, REQUEST_CODE_OTHER);
 			}
 		});
+        
+        btn = (Button)findViewById(R.id.btn_start);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, MyService.class);
+				intent.putExtra("count", count);
+				startService(intent);
+				count+=100;
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_stop);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, MyService.class);
+				stopService(intent);
+			}
+		});
+        
+        
     }
 
     @Override
@@ -48,6 +77,29 @@ public class MainActivity extends ActionBarActivity {
     		}
     	}
     }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	IntentFilter filter = new IntentFilter(MyService.ACTION_MOD_TEN);
+    	registerReceiver(mCountReceiver, filter);
+    }
+    
+    BroadcastReceiver mCountReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Toast.makeText(MainActivity.this, "Activity Receive Count : " + intent.getIntExtra("count", 0), Toast.LENGTH_SHORT).show();
+			setResultCode(Activity.RESULT_OK);
+		}
+	};
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(mCountReceiver);
+	}
+	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
