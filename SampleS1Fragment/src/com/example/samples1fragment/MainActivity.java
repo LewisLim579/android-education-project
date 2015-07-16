@@ -1,8 +1,9 @@
 package com.example.samples1fragment;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.Button;
 
 public class MainActivity extends ActionBarActivity {
 
+	int count = 0;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +24,10 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				TabOneFragment f = new TabOneFragment();
+				Bundle b = new Bundle();
+				count++;
+				b.putInt("count", count);
+				f.setArguments(b);
 				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 				ft.replace(R.id.container, f);
 				ft.commit();
@@ -36,6 +43,16 @@ public class MainActivity extends ActionBarActivity {
 				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 				ft.replace(R.id.container, f);
 				ft.commit();
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_other);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, OtherActivity.class);
+				startActivity(intent);
 			}
 		});
         
