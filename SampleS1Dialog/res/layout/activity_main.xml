@@ -56,4 +56,18 @@
         android:layout_height="wrap_content"
         android:text="progress" />
 
+    <Button
+        android:id="@+id/btn_dialog_fragment"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dialog fragment" />
+
+    <Button
+        android:id="@+id/btn_custom_dialog"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="custom" />
+
 </LinearLayout>

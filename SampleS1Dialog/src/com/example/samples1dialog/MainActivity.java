@@ -175,6 +175,26 @@ public class MainActivity extends ActionBarActivity {
 				dialog.setProgress(1321);
 			}
 		});
+        
+        btn = (Button)findViewById(R.id.btn_dialog_fragment);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				MyDialogFragment f = new MyDialogFragment();
+				f.show(getSupportFragmentManager(), "dialog");
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_custom_dialog);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				LoginDialogFragment f = new LoginDialogFragment();
+				f.show(getSupportFragmentManager(), null);
+			}
+		});
     }
     
     int choicePoistion = 0;
