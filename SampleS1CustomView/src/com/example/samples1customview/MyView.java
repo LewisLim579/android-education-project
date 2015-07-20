@@ -21,15 +21,25 @@ import android.graphics.PathEffect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Shader.TileMode;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class MyView extends View {
 
+	GestureDetector mDetector;
 	public MyView(Context context) {
 		super(context);
 		init();
 	}
 	
+	public MyView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init();
+	}
+
 	private static final int LENGTH = 300;
 	private static final float DELTA = 10;
 	private static final int COUNT = (int)(LENGTH / DELTA) + 1;
@@ -39,6 +49,26 @@ public class MyView extends View {
 		makeLine();
 		makePath();
 		makeBitmap();
+		
+		mDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+			@Override
+			public boolean onDown(MotionEvent e) {
+				return true;
+			}
+			
+			@Override
+			public boolean onSingleTapUp(MotionEvent e) {
+				Log.i("MyView", "SingleTapUp...");
+				return true;
+			}
+			
+			@Override
+			public boolean onFling(MotionEvent e1, MotionEvent e2,
+					float velocityX, float velocityY) {
+				Log.i("MyView", "fling...");
+				return true;
+			}
+		});
 	}
 	
 	
@@ -48,6 +78,12 @@ public class MyView extends View {
 		InputStream is = getContext().getResources().openRawResource(R.drawable.photo1);
 
 		mBitmap = BitmapFactory.decodeStream(is);
+	}
+	
+	public void setBitmap(Bitmap bitmap) {
+		mBitmap = bitmap;
+//		invalidate();
+		requestLayout();
 	}
 	
 	Path mPath, mTextPath, mLinePath;
@@ -84,6 +120,47 @@ public class MyView extends View {
 	}
 	
 	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		int width, height;
+		width = getPaddingLeft() + getPaddingRight();
+		if (mBitmap != null) {
+			width += mBitmap.getWidth();
+		}
+		height = getPaddingTop() + getPaddingBottom();
+		if (mBitmap != null) {
+			height += mBitmap.getHeight();
+		}
+		
+		width = resolveSize(width, widthMeasureSpec);
+		height = resolveSize(height, heightMeasureSpec);
+		
+		setMeasuredDimension(width, height);
+	}
+
+	int imageX, imageY;
+	
+	@Override
+	protected void onLayout(boolean changed, int left, int top, int right,
+			int bottom) {
+		super.onLayout(changed, left, top, right, bottom);
+		if (mBitmap != null) {
+			imageX = (right - left) / 2 - mBitmap.getWidth() / 2;
+			imageY = (bottom - top) / 2 - mBitmap.getHeight() / 2;
+		} else {
+			imageX = getPaddingLeft();
+			imageY = getPaddingTop();
+		}
+		
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		boolean isProcessed = mDetector.onTouchEvent(event);
+		return isProcessed || super.onTouchEvent(event);
+	}
+	
+	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
@@ -108,7 +185,7 @@ public class MyView extends View {
 		cm.setSaturation(0);
 		ColorFilter filter = new ColorMatrixColorFilter(cm);
 		mPaint.setColorFilter(filter);
-		canvas.drawBitmap(mBitmap, 100,  100, mPaint);
+		canvas.drawBitmap(mBitmap, imageX, imageY, mPaint);
 	}
 	
 	private void drawShader(Canvas canvas) {
