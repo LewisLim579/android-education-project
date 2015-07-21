@@ -8,8 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import com.begentgroup.xmlparser.XMLParser;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -20,6 +18,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.begentgroup.xmlparser.XMLParser;
+import com.example.samples1navermovie.NetworkManager.OnResultListener;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -43,7 +45,21 @@ public class MainActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				String keyword = keywordView.getText().toString();
 				if (keyword != null && !keyword.equals("")) {
-					new MovieTask().execute(keyword);
+//					new MovieTask().execute(keyword);
+					NetworkManager.getInstance().getNaverMovies(keyword, new OnResultListener<NaverMovies>() {
+						
+						@Override
+						public void onSuccess(NaverMovies result) {
+							for (MovieItem item : result.items) {
+								mAdapter.add(item);
+							}
+						}
+						
+						@Override
+						public void onFail(int code) {
+							Toast.makeText(MainActivity.this, "fail", Toast.LENGTH_SHORT).show();
+						}
+					});
 				}
 			}
 		});
