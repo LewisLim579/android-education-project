@@ -26,7 +26,8 @@ import com.example.samples1navermovie.NetworkManager.OnResultListener;
 public class MainActivity extends ActionBarActivity {
 
 	ListView listView;
-	ArrayAdapter<MovieItem> mAdapter;
+//	ArrayAdapter<MovieItem> mAdapter;
+	MyAdapter mAdapter;
 	EditText keywordView;
 
 	@Override
@@ -34,8 +35,9 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		listView = (ListView) findViewById(R.id.listView1);
-		mAdapter = new ArrayAdapter<MovieItem>(this,
-				android.R.layout.simple_list_item_1);
+//		mAdapter = new ArrayAdapter<MovieItem>(this,
+//				android.R.layout.simple_list_item_1);
+		mAdapter = new MyAdapter();
 		listView.setAdapter(mAdapter);
 		keywordView = (EditText) findViewById(R.id.edit_keyword);
 		Button btn = (Button) findViewById(R.id.btn_search);
