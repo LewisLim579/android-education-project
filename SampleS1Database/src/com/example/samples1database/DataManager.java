@@ -53,6 +53,20 @@ public class DataManager extends SQLiteOpenHelper implements DBConstant.PersonTa
 	
 	public List<Person> getPersonList(String keyword) {
 		List<Person> list = new ArrayList<Person>();
+		Cursor c = getPersonCursor(keyword);
+		
+		while(c.moveToNext()) {
+			Person p = new Person();
+			p.id = c.getLong(c.getColumnIndex(PersonTable._ID));
+			p.name = c.getString(c.getColumnIndex(PersonTable.NAME));
+			p.age = c.getInt(c.getColumnIndex(PersonTable.AGE));
+			list.add(p);
+		}
+		
+		return list;
+	}
+	
+	public Cursor getPersonCursor(String keyword) {
 		SQLiteDatabase db = getReadableDatabase();
 //		String sql = "SELECT _id, name, age FROM persontbl";
 //		if (keyword != null && !keyword.equals("")) {
@@ -69,17 +83,7 @@ public class DataManager extends SQLiteOpenHelper implements DBConstant.PersonTa
 		String groupBy = null;
 		String having = null;
 		String orderBy = null;
-		Cursor c = db.query(PersonTable.TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
-		
-		while(c.moveToNext()) {
-			Person p = new Person();
-			p.id = c.getLong(c.getColumnIndex(PersonTable._ID));
-			p.name = c.getString(c.getColumnIndex(PersonTable.NAME));
-			p.age = c.getInt(c.getColumnIndex(PersonTable.AGE));
-			list.add(p);
-		}
-		
-		return list;
+		return db.query(PersonTable.TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
 	}
 
 }

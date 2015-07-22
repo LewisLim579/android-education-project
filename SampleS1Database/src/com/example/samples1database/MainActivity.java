@@ -1,29 +1,34 @@
 package com.example.samples1database;
 
-import java.util.List;
-
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.example.samples1database.DBConstant.PersonTable;
 
 
 public class MainActivity extends ActionBarActivity {
 
 	ListView listView;
-	ArrayAdapter<Person> mAdapter;
+//	ArrayAdapter<Person> mAdapter;
+	SimpleCursorAdapter mAdapter;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView = (ListView)findViewById(R.id.listView1);
-        mAdapter = new ArrayAdapter<Person>(this, android.R.layout.simple_list_item_1);
+//        mAdapter = new ArrayAdapter<Person>(this, android.R.layout.simple_list_item_1);
+        String[] from = { PersonTable.NAME, PersonTable.AGE };
+        int[] to = { R.id.text_name, R.id.text_age };
+        mAdapter = new SimpleCursorAdapter(this, R.layout.view_item, null, from, to, 0);
         listView.setAdapter(mAdapter);
         
         Button btn = (Button)findViewById(R.id.btn_add);
@@ -41,11 +46,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
     	super.onResume();
-    	List<Person> list = DataManager.getInstance().getPersonList(null);
-    	mAdapter.clear();
-    	for (Person p : list) {
-    		mAdapter.add(p);
-    	}
+//    	List<Person> list = DataManager.getInstance().getPersonList(null);
+//    	mAdapter.clear();
+//    	for (Person p : list) {
+//    		mAdapter.add(p);
+//    	}
+    	Cursor c = DataManager.getInstance().getPersonCursor(null);
+    	mAdapter.changeCursor(c);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
