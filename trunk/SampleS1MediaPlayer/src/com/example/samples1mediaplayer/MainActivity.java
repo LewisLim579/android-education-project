@@ -2,11 +2,14 @@ package com.example.samples1mediaplayer;
 
 import java.io.IOException;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -205,6 +208,55 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 		});
+        
+        btn = (Button)findViewById(R.id.btn_list);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, MusicActivity.class);
+				startActivityForResult(i, 0);
+			}
+		});
+    }
+    
+    @Override
+    protected void onPause() {
+    	super.onPause();
+    	if (mState == PlayState.STARTED) {
+    		mPlayer.pause();
+    		mState = PlayState.PAUSED;
+    	}
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    	if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
+    		Uri uri = data.getData();
+    		mPlayer.reset();
+    		mState = PlayState.IDLE;
+    		try {
+				mPlayer.setDataSource(this, uri);
+				mState = PlayState.INITIALIZED;
+				mPlayer.prepare();
+				mState = PlayState.PREPARED;
+				progressView.setMax(mPlayer.getDuration());
+				progressView.setProgress(0);
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     }
     
     float volume = 1.0f;
