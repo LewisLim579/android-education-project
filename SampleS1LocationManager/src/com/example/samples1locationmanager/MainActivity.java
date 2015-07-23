@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -13,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
@@ -20,6 +22,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +55,22 @@ public class MainActivity extends ActionBarActivity {
 		mAdapter = new ArrayAdapter<Address>(this, android.R.layout.simple_list_item_1);
 		listView.setAdapter(mAdapter);
 		inputView = (EditText)findViewById(R.id.edit_input);
+		
+		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Address addr = (Address)listView.getItemAtPosition(position);
+				Intent intent = new Intent(MainActivity.this, ProximityService.class);
+				intent.putExtra("address", addr);
+				intent.setData(Uri.parse("myscheme://packagename/"+id));
+				PendingIntent pi = PendingIntent.getService(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				mLM.addProximityAlert(addr.getLatitude(),addr.getLongitude(), 100, System.currentTimeMillis() + 24 * 60 * 60 * 1000, pi);
+				
+				return true;
+			}
+		});
 		
 		Button btn = (Button)findViewById(R.id.btn_search);
 		btn.setOnClickListener(new View.OnClickListener() {
