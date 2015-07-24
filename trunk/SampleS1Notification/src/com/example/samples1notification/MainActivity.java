@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -57,8 +60,43 @@ public class MainActivity extends ActionBarActivity {
 				
 			}
 		});
+        
+        
+        btn = (Button)findViewById(R.id.btn_progress);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				current = 0;
+				mHandler.post(downloadRunnable);
+			}
+		});
     }
 
+    Handler mHandler = new Handler(Looper.getMainLooper());
+    
+    int current = 0;
+    Runnable downloadRunnable = new Runnable() {
+		
+		@Override
+		public void run() {
+			if (current <= 100) {
+				NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
+				builder.setSmallIcon(android.R.drawable.ic_dialog_alert);
+				builder.setTicker("progress : " + current);
+				builder.setContentTitle("download .... " + current);
+				builder.setProgress(100, current, false);
+				builder.setOnlyAlertOnce(true);
+				builder.setOngoing(true);
+				mNM.notify(1000, builder.build());
+				current += 5;
+				mHandler.postDelayed(this, 500);
+			} else {
+				mNM.cancel(1000);
+			}
+		}
+	};
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
