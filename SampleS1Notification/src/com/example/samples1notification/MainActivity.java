@@ -33,15 +33,16 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
+				messageId++;
 				builder.setSmallIcon(android.R.drawable.ic_dialog_info);
 				builder.setTicker("Notification Test...");
-				builder.setContentTitle("Noti Test... : " + messageId++);
+				builder.setContentTitle("Noti Test... : " + messageId);
 				builder.setContentText("notification .....");
 				builder.setWhen(System.currentTimeMillis());
 				
 				Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
-				intent.setData(Uri.parse("myscheme://com.example.samples1notification/"+mId));
-				intent.putExtra(NotificationActivity.EXTRA_MESSAGE, "noti test...." + mId);
+				intent.setData(Uri.parse("myscheme://com.example.samples1notification/"+messageId));
+				intent.putExtra(NotificationActivity.EXTRA_MESSAGE, "noti test...." + messageId);
 				
 				PendingIntent pi = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 				
@@ -51,9 +52,8 @@ public class MainActivity extends ActionBarActivity {
 				builder.setAutoCancel(true);
 				
 				Notification n = builder.build();
-				
-				mNM.notify(mId++, n);
-				
+				mNM.cancel(mId);
+				mNM.notify(mId, n);
 				
 			}
 		});
