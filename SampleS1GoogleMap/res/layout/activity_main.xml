@@ -25,12 +25,31 @@
             android:layout_height="wrap_content"
             android:text="M" />
 
+        <EditText
+            android:id="@+id/edit_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10" />
+
     </LinearLayout>
 
-    <fragment
-        android:id="@+id/fragment1"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <fragment
+            android:id="@+id/fragment1"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="100dp"
+            android:layout_height="match_parent" >
+        </ListView>
+
+    </FrameLayout>
 
 </LinearLayout>
