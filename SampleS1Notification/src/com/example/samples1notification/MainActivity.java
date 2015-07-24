@@ -71,6 +71,38 @@ public class MainActivity extends ActionBarActivity {
 				mHandler.post(downloadRunnable);
 			}
 		});
+        
+        btn = (Button)findViewById(R.id.btn_big_text);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
+				messageId++;
+				builder.setSmallIcon(android.R.drawable.ic_dialog_info);
+				builder.setTicker("Notification Test...");
+				builder.setContentTitle("Noti Test... : " + messageId);
+				builder.setContentText("notification .....");
+				builder.setWhen(System.currentTimeMillis());
+				
+				NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
+				style.bigText("test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...test...");
+				builder.setStyle(style);
+				Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+				intent.setData(Uri.parse("myscheme://com.example.samples1notification/"+messageId));
+				intent.putExtra(NotificationActivity.EXTRA_MESSAGE, "noti test...." + messageId);
+				
+				PendingIntent pi = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				
+				builder.setContentIntent(pi);
+				
+				builder.setDefaults(NotificationCompat.DEFAULT_ALL);				
+				builder.setAutoCancel(true);
+				
+				Notification n = builder.build();
+				mNM.notify(mId, n);
+			}
+		});
     }
 
     Handler mHandler = new Handler(Looper.getMainLooper());
