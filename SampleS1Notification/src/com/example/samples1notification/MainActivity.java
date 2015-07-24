@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
 				NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
 				messageId++;
 				builder.setSmallIcon(android.R.drawable.ic_dialog_info);
-				builder.setTicker("Notification Test...");
+				builder.setTicker("Notification Test..." + messageId);
 				builder.setContentTitle("Noti Test... : " + messageId);
 				builder.setContentText("notification .....");
 				builder.setWhen(System.currentTimeMillis());
@@ -55,7 +55,6 @@ public class MainActivity extends ActionBarActivity {
 				builder.setAutoCancel(true);
 				
 				Notification n = builder.build();
-				mNM.cancel(mId);
 				mNM.notify(mId, n);
 				
 			}
@@ -115,11 +114,21 @@ public class MainActivity extends ActionBarActivity {
 			if (current <= 100) {
 				NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
 				builder.setSmallIcon(android.R.drawable.ic_dialog_alert);
-				builder.setTicker("progress : " + current);
+				builder.setTicker("download progress");
 				builder.setContentTitle("download .... " + current);
 				builder.setProgress(100, current, false);
 				builder.setOnlyAlertOnce(true);
 				builder.setOngoing(true);
+				builder.setWhen(System.currentTimeMillis());
+				builder.setDefaults(NotificationCompat.DEFAULT_ALL);				
+				Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+				intent.setData(Uri.parse("myscheme://com.example.samples1notification/"+messageId));
+				intent.putExtra(NotificationActivity.EXTRA_MESSAGE, "noti test...." + messageId);
+				
+				PendingIntent pi = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				
+				builder.setContentIntent(pi);
+			
 				mNM.notify(1000, builder.build());
 				current += 5;
 				mHandler.postDelayed(this, 500);
