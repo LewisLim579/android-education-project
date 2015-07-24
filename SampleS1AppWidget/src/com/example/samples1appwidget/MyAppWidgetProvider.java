@@ -26,4 +26,19 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 		
 		
 	}
+	
+	@Override
+	public void onEnabled(Context context) {
+		super.onEnabled(context);
+		Intent intent = new Intent(context, UpdateService.class);
+		context.startService(intent);
+	}
+	
+	@Override
+	public void onDisabled(Context context) {
+		super.onDisabled(context);
+		Intent intent = new Intent(context, UpdateService.class);
+		context.stopService(intent);
+	}
+	
 }
