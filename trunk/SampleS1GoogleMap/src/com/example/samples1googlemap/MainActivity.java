@@ -1,5 +1,8 @@
 package com.example.samples1googlemap;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -9,12 +12,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.CancelableCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -30,11 +39,32 @@ public class MainActivity extends ActionBarActivity implements
 	GoogleMap mMap;
 	LocationManager mLM;
 	String mProvider;
+	EditText inputView;
+	Map<Marker,POIData> mPoiResolver = new HashMap<Marker,POIData>();
+	Map<POIData,Marker> mMarkerResolver = new HashMap<POIData, Marker>();
+	ListView listView;
+	ArrayAdapter<POIData> mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		inputView = (EditText)findViewById(R.id.edit_input);
+		listView = (ListView)findViewById(R.id.listView1);
+		mAdapter = new ArrayAdapter<POIData>(this, android.R.layout.simple_list_item_1);
+		listView.setAdapter(mAdapter);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				POIData poi = (POIData)listView.getItemAtPosition(position);
+				Marker m = mMarkerResolver.get(poi);
+				moveMarkerPosition(m);
+//				moveMap(m.getPosition().latitude, m.getPosition().longitude);
+//				m.showInfoWindow();
+			}
+		});
 		setUpMapIfNeeded();
 		mLM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		mProvider = LocationManager.GPS_PROVIDER;
@@ -47,12 +77,20 @@ public class MainActivity extends ActionBarActivity implements
 				LatLng target = position.target;
 				MarkerOptions options = new MarkerOptions();
 				options.position(target);
-				options.title("My Marker");
-				options.snippet("snippet");
+				String text = inputView.getText().toString();
+				POIData poi = new POIData();
+				poi.title = text;
+				poi.description = "desc : " + text;
+				mAdapter.add(poi);
+				options.title(poi.title);
+				options.snippet(poi.description);
 				options.icon(BitmapDescriptorFactory.defaultMarker());
 				options.anchor(0.5f, 1);
 				options.draggable(true);
 				Marker m = mMap.addMarker(options);
+				
+				mMarkerResolver.put(poi, m);
+				mPoiResolver.put(m, poi);
 			}
 		});
 	}
@@ -81,6 +119,21 @@ public class MainActivity extends ActionBarActivity implements
 		}
 	};
 
+	private void moveMarkerPosition(final Marker m) {
+		CameraUpdate update = CameraUpdateFactory.newLatLng(m.getPosition());
+		mMap.animateCamera(update, new CancelableCallback() {
+			
+			@Override
+			public void onFinish() {
+				m.showInfoWindow();
+			}
+			
+			@Override
+			public void onCancel() {
+				m.showInfoWindow();
+			}
+		});
+	}
 	private void moveMap(double lat, double lng) {
 		CameraPosition position = new CameraPosition.Builder()
 				.target(new LatLng(lat, lng))
@@ -176,8 +229,11 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onInfoWindowClick(Marker arg0) {
-		Toast.makeText(this, "info window click" + arg0.getTitle(), Toast.LENGTH_SHORT).show();
-		arg0.hideInfoWindow();
+	public void onInfoWindowClick(Marker marker) {
+		POIData poi = mPoiResolver.get(marker);
+		
+		Toast.makeText(this, "info window click : " + poi.created, Toast.LENGTH_SHORT).show();
+		
+		marker.hideInfoWindow();
 	}
 }
