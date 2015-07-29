@@ -9,7 +9,26 @@ import android.widget.BaseAdapter;
 
 public class MyAdapter extends BaseAdapter {
 	List<MovieItem> mItems = new ArrayList<MovieItem>();
+	String mKeyword;
+	int totalCount;
+	public void setKeyword(String keyword) {
+		mKeyword = keyword;
+	}
 	
+	public String getKeyword() {
+		return mKeyword;
+	}
+	
+	public void setTotal(int total) {
+		totalCount = total;
+	}
+	
+	public int getStart() {
+		if (mItems.size() < totalCount) {
+			return mItems.size() + 1;
+		}
+		return -1;
+	}
 	public void addAll(List<MovieItem> items) {
 		mItems.addAll(items);
 		notifyDataSetChanged();
@@ -40,6 +59,11 @@ public class MyAdapter extends BaseAdapter {
 		}
 		view.setMovieItem(mItems.get(position));
 		return view;
+	}
+
+	public void clear() {
+		mItems.clear();
+		notifyDataSetChanged();
 	}
 
 }
