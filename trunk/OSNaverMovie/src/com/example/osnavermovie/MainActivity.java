@@ -9,6 +9,8 @@ import java.net.URLEncoder;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -21,18 +23,66 @@ import android.widget.Toast;
 
 import com.begentgroup.xmlparser.XMLParser;
 import com.example.osnavermovie.NetworkManager.OnResultListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 
 public class MainActivity extends ActionBarActivity {
+	PullToRefreshListView refreshView;
 	ListView listView;
 	MyAdapter mAdapter;
 	EditText keywordView;
+	Handler mHandler = new Handler(Looper.getMainLooper());
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listView = (ListView)findViewById(R.id.listView1);
+        refreshView = (PullToRefreshListView)findViewById(R.id.listView1);
+        refreshView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> rv) {
+				mHandler.postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						refreshView.onRefreshComplete();
+					}
+				}, 2000);
+			}
+		});
+        
+//        refreshView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+//
+//			@Override
+//			public void onLastItemVisible() {
+//				String keyword = mAdapter.getKeyword();
+//				if (!TextUtils.isEmpty(keyword)) {
+//					int start = mAdapter.getStart();
+//					if (start != -1) {
+//						NetworkManager.getInstance().getNaverMovies(MainActivity.this, keyword, start, 20, new OnResultListener<Movies>() {
+//
+//							@Override
+//							public void onSuccess(Movies result) {
+//								mAdapter.addAll(result.items);
+//							}
+//
+//							@Override
+//							public void onFail(int code) {
+//								// TODO Auto-generated method stub
+//								
+//							}
+//							
+//						});
+//					}
+//				}
+//			}
+//		});
+        
+        listView = refreshView.getRefreshableView();
         mAdapter = new MyAdapter();
         listView.setAdapter(mAdapter);
         keywordView = (EditText)findViewById(R.id.edit_keyword);
@@ -41,14 +91,17 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View v) {
-				String keyword = keywordView.getText().toString();
+				final String keyword = keywordView.getText().toString();
 				if (!TextUtils.isEmpty(keyword)) {
 //					new MovieTask().execute(keyword);
 					NetworkManager.getInstance().getNaverMovies(MainActivity.this, keyword, 1, 20, new OnResultListener<Movies>() {
 						
 						@Override
 						public void onSuccess(Movies result) {
+							mAdapter.clear();
 							mAdapter.addAll(result.items);
+							mAdapter.setKeyword(keyword);
+							mAdapter.setTotal(result.total);
 						}
 						
 						@Override
