@@ -1,5 +1,7 @@
 package com.example.helloandroids2;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -27,6 +30,45 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				messageView.setText(inputView.getText().toString());
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_show_google);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+				startActivity(intent);
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_dial);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:010-2257-3585"));
+				startActivity(intent);
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_toast);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(MainActivity.this, "Toast Test....", Toast.LENGTH_SHORT).show();
+			}
+		});
+        
+        btn = (Button)findViewById(R.id.btn_other);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, OtherActivity.class);
+				startActivity(intent);
 			}
 		});
     }
