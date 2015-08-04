@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +31,15 @@ public class MainActivity extends ActionBarActivity {
         listView = (ListView)findViewById(R.id.listView1);
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				String text = (String)listView.getItemAtPosition(position);
+				messageView.setText(text);
+			}
+		});
         Button btn = (Button)findViewById(R.id.btn_insert);
         btn.setOnClickListener(new View.OnClickListener() {
 			
