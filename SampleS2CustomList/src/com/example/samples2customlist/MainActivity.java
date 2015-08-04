@@ -8,7 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -29,6 +31,15 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        View headerView = getLayoutInflater().inflate(R.layout.header_layout, null);
+        ImageView headerIcon = (ImageView)headerView.findViewById(R.id.image_header_icon);
+        headerIcon.setImageResource(R.drawable.gallery_photo_1);
+        TextView headerTitle = (TextView)headerView.findViewById(R.id.text_header_title);
+        headerTitle.setText("header title....");
+        
+        
+        
         listView = (ListView)findViewById(R.id.listView1);
         mAdapter = new MyAdapter();
         mAdapter.setOnCommentClickListener(new ItemView.OnCommentClickListener() {
@@ -39,6 +50,9 @@ public class MainActivity extends ActionBarActivity {
 				startActivity(intent);
 			}
 		});
+        
+        listView.addHeaderView(headerView, null, false);
+        
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new OnItemClickListener() {
 
