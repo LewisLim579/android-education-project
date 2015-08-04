@@ -7,6 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,12 +17,17 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
 
 	TextView messageView;
+	CheckBox alarmCheckView;
+	RadioGroup group;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         messageView = (TextView)findViewById(R.id.textView1);
+        alarmCheckView = (CheckBox)findViewById(R.id.checkBox1);
+        group = (RadioGroup)findViewById(R.id.radioGroup1);
+        
         Button btn = (Button)findViewById(R.id.button1);
         btn.setOnClickListener(new View.OnClickListener() {
 			
@@ -29,10 +37,60 @@ public class MainActivity extends ActionBarActivity {
 				messageView.setText(Html.fromHtml(message));
 			}
 		});
+        
+        alarmCheckView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isForced) return;
+				Toast.makeText(MainActivity.this, "alarm changed : " + isChecked, Toast.LENGTH_SHORT).show();
+			}
+		});
+        
+        group.check(R.id.radio_f);
+        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+		    	switch(checkedId) {
+		    	case R.id.radio_m :
+		    		Toast.makeText(MainActivity.this, "select m", Toast.LENGTH_SHORT).show();
+		    		break;
+		    	case R.id.radio_f :
+		    		Toast.makeText(MainActivity.this, "select f", Toast.LENGTH_SHORT).show();
+		    		break;
+		    	}
+			}
+		});
     }
     
+    boolean isForced = false;
+    
     public void onButtonClick(View v) {
-    	Toast.makeText(this, "onButtonClick", Toast.LENGTH_SHORT).show();
+//    	Toast.makeText(this, "onButtonClick", Toast.LENGTH_SHORT).show();
+    	if (alarmCheckView.isChecked()) {
+    		Toast.makeText(this, "alarm true", Toast.LENGTH_SHORT).show();
+    		isForced = true;
+    		alarmCheckView.setChecked(false);
+    		isForced = false;
+    	} else {
+    		Toast.makeText(this, "alarm false", Toast.LENGTH_SHORT).show();
+    		isForced = true;
+    		alarmCheckView.setChecked(true);
+    		isForced = false;
+    	}
+    }
+    
+    public void onButtonRadio(View v) {
+    	int id = group.getCheckedRadioButtonId();
+    	switch(id) {
+    	case R.id.radio_m :
+    		Toast.makeText(this, "select m", Toast.LENGTH_SHORT).show();
+    		break;
+    	case R.id.radio_f :
+    		Toast.makeText(this, "select f", Toast.LENGTH_SHORT).show();
+    		break;
+    	}
     }
 
     @Override
