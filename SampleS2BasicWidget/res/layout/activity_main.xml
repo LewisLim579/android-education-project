@@ -34,4 +34,12 @@
         android:text="Button"
         android:textColor="@color/btn_text_selector" />
 
+    <Button
+        android:id="@+id/button2"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onButtonClick"
+        android:text="Button" />
+
 </LinearLayout>

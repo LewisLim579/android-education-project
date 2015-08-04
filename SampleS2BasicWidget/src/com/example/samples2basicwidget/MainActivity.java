@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -28,6 +29,10 @@ public class MainActivity extends ActionBarActivity {
 				messageView.setText(Html.fromHtml(message));
 			}
 		});
+    }
+    
+    public void onButtonClick(View v) {
+    	Toast.makeText(this, "onButtonClick", Toast.LENGTH_SHORT).show();
     }
 
     @Override
