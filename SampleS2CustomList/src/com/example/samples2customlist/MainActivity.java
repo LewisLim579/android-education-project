@@ -1,10 +1,15 @@
 package com.example.samples2customlist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -26,8 +31,24 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         listView = (ListView)findViewById(R.id.listView1);
         mAdapter = new MyAdapter();
+        mAdapter.setOnCommentClickListener(new ItemView.OnCommentClickListener() {
+			
+			@Override
+			public void onCommentClick(ItemView view, ItemData data) {
+				Intent intent = new Intent(MainActivity.this, CommentActivity.class);
+				startActivity(intent);
+			}
+		});
         listView.setAdapter(mAdapter);
-        
+        listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				ItemData data = (ItemData)listView.getItemAtPosition(position);
+				Toast.makeText(MainActivity.this, "title : " + data.title, Toast.LENGTH_SHORT).show();
+			}
+		});
         initData();
     }
     
