@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="title_color">#f00</color>
-    
+    <color name="btn_normal_color">#000</color>
+    <color name="btn_pressed_color">#f00</color>
 </resources>
