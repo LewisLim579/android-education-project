@@ -3,19 +3,28 @@ package com.example.samples2customlist;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.samples2customlist.ItemView.OnCommentClickListener;
+
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public class MyAdapter extends BaseAdapter {
+public class MyAdapter extends BaseAdapter implements ItemView.OnCommentClickListener {
 
 	List<ItemData> items = new ArrayList<ItemData>();
+
+	ItemView.OnCommentClickListener mCommentListener;
+	
+	public void setOnCommentClickListener(OnCommentClickListener listener) {
+		mCommentListener = listener;
+	}
 	
 	public void add(ItemData item) {
 		items.add(item);
 		notifyDataSetChanged();
 	}
-	
+
 	@Override
 	public int getCount() {
 		return items.size();
@@ -34,9 +43,24 @@ public class MyAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ItemView view;
-		view = new ItemView(parent.getContext());
+		if (convertView == null) {
+			view = new ItemView(parent.getContext());
+//			if (mCommentListener != null) {
+//				view.setOnCommentClickListener(mCommentListener);
+//			}
+			view.setOnCommentClickListener(this);
+		} else {
+			view = (ItemView) convertView;
+		}
 		view.setItemData(items.get(position));
 		return view;
+	}
+
+	@Override
+	public void onCommentClick(ItemView view, ItemData data) {
+		if (mCommentListener != null) {
+			mCommentListener.onCommentClick(view, data);
+		}
 	}
 
 }
