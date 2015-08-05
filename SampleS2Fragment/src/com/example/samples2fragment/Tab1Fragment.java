@@ -1,5 +1,6 @@
 package com.example.samples2fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,19 @@ public class Tab1Fragment extends Fragment {
 	TextView messageView;
 	EditText inputView;
 	
+	public interface MessageReceiver {
+		public void setMessage(String message);
+	}
+	
+	MessageReceiver callback;
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if (activity instanceof MessageReceiver) {
+			callback = (MessageReceiver)activity;
+		}
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -25,9 +39,18 @@ public class Tab1Fragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				messageView.setText(inputView.getText().toString());
+				String message = inputView.getText().toString();
+				messageView.setText(message);
+//				((MainActivity)getActivity()).setMessage(message);
+				if (callback != null) {
+					callback.setMessage(message);
+				}
 			}
 		});
 		return view;
+	}
+	
+	public String getMessage() {
+		return "Hi! Fragment";
 	}
 }
