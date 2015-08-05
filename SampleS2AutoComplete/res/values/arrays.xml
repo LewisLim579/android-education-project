@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="items">
+        <item>abcd</item>
+        <item>abde</item>
+        <item>abfg</item>
+        <item>abce</item>
+        <item>acde</item>
+        <item>bcde</item>
+        <item>eabc</item>
+        <item>fgab</item>
+        <item>dcba</item>
+    </string-array>
+
+</resources>
