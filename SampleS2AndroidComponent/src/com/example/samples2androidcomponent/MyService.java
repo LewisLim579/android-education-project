@@ -1,7 +1,10 @@
 package com.example.samples2androidcomponent;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -29,7 +32,7 @@ public class MyService extends Service {
 				while(isRunning) {
 					mCount++;
 					
-					Log.i(TAG,"count : " + mCount);
+//					Log.i(TAG,"count : " + mCount);
 					
 					try {
 						Thread.sleep(1000);
@@ -41,7 +44,23 @@ public class MyService extends Service {
 				}
 			}
 		}).start();
+		
+		IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+		filter.addAction(Intent.ACTION_SCREEN_ON);
+		registerReceiver(mScreenOnOff, filter);
 	}
+	
+	BroadcastReceiver mScreenOnOff = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+				Log.i(TAG,"Screen off");
+			} else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+				Log.i(TAG,"Screen on");
+			}
+		}
+	};
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -57,5 +76,6 @@ public class MyService extends Service {
 		super.onDestroy();
 		Toast.makeText(this, "onDestroy...", Toast.LENGTH_SHORT).show();
 		isRunning = false;
+		unregisterReceiver(mScreenOnOff);
 	}
 }
