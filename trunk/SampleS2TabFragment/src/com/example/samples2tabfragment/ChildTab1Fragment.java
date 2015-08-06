@@ -16,4 +16,11 @@ public class ChildTab1Fragment extends Fragment {
 		tv.setText("Child Tab 1 Content");
 		return view;
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		getActivity().setTitle("ChildTab1");
+	}
+	
 }

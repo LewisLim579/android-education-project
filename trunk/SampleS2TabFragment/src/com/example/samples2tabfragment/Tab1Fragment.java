@@ -16,4 +16,10 @@ public class Tab1Fragment extends Fragment {
 		tv.setText("Tab1 Content");
 		return view;
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		getActivity().setTitle("Tab1");
+	}
 }
