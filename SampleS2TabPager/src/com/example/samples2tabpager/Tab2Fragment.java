@@ -16,4 +16,15 @@ public class Tab2Fragment extends Fragment {
 		tv.setText("Tab2 Content");
 		return view;
 	}
+	
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser) {
+			if (getActivity() != null) {
+				getActivity().setTitle("Tab2");
+			}
+		}
+	}
+	
 }
