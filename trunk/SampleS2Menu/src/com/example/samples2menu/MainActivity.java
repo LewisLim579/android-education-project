@@ -1,12 +1,15 @@
 package com.example.samples2menu;
 
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,9 +47,23 @@ public class MainActivity extends ActionBarActivity {
     	return super.onContextItemSelected(item);
     }
     
+    EditText inputView;
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem item = menu.findItem(R.id.menu_add);
+        View view = MenuItemCompat.getActionView(item);
+        inputView = (EditText)view.findViewById(R.id.editText1);
+        Button btn = (Button)view.findViewById(R.id.button1);
+        btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String message = inputView.getText().toString();
+				Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+			}
+		});
         return true;
     }
 

@@ -10,14 +10,25 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_add"
+        android:icon="@android:drawable/ic_input_add"
         android:orderInCategory="101"
         android:title="ADD"
-        android:icon="@android:drawable/ic_input_add">
+        app:actionLayout="@layout/menu_layout"
+        app:showAsAction="always|withText|collapseActionView">
     </item>
-    <item android:id="@+id/item_category" android:title="Category" android:orderInCategory="102">
+    <item
+        android:id="@+id/item_category"
+        android:orderInCategory="102"
+        android:title="Category">
         <menu>
-            <item android:id="@+id/menu_sub1" android:title="S1" android:orderInCategory="200"/>
-            <item android:id="@+id/menu_sub2" android:title="S2" android:orderInCategory="201"/>
+            <item
+                android:id="@+id/menu_sub1"
+                android:orderInCategory="200"
+                android:title="S1"/>
+            <item
+                android:id="@+id/menu_sub2"
+                android:orderInCategory="201"
+                android:title="S2"/>
         </menu>
     </item>
 
