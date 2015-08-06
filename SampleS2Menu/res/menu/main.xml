@@ -14,5 +14,11 @@
         android:title="ADD"
         android:icon="@android:drawable/ic_input_add">
     </item>
+    <item android:id="@+id/item_category" android:title="Category" android:orderInCategory="102">
+        <menu>
+            <item android:id="@+id/menu_sub1" android:title="S1" android:orderInCategory="200"/>
+            <item android:id="@+id/menu_sub2" android:title="S2" android:orderInCategory="201"/>
+        </menu>
+    </item>
 
 </menu>
