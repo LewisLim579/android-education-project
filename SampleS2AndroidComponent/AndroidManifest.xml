@@ -26,6 +26,7 @@
             android:name=".OtherActivity"
             android:label="@string/title_activity_other" >
         </activity>
+        <service android:name="MyService"></service>
     </application>
 
 </manifest>
