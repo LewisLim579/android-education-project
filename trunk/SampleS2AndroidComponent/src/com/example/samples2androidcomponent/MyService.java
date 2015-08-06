@@ -1,5 +1,6 @@
 package com.example.samples2androidcomponent;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,6 +20,9 @@ public class MyService extends Service {
 	private static final String TAG = "MyService";
 	boolean isRunning;
 	int mCount;
+	
+	public static final String ACTION_COUNT = "com.example.samples2androidcomponent.action.COUNT";
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -32,8 +36,21 @@ public class MyService extends Service {
 				while(isRunning) {
 					mCount++;
 					
-//					Log.i(TAG,"count : " + mCount);
+					Log.i(TAG,"count : " + mCount);
 					
+					if (mCount % 10 == 0) {
+						Intent event = new Intent(ACTION_COUNT);
+						event.putExtra("count", mCount);
+						sendOrderedBroadcast(event, null, new BroadcastReceiver() {
+							@Override
+							public void onReceive(Context context, Intent intent) {
+								int code = getResultCode();
+								if (code == Activity.RESULT_CANCELED) {
+									Toast.makeText(MyService.this, "MyService not processed", Toast.LENGTH_SHORT).show();
+								}
+							}
+						}, null, Activity.RESULT_CANCELED, null, null);
+					}
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
